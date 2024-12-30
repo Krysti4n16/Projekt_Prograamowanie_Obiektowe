@@ -23,6 +23,7 @@ public class GamePanel extends JPanel implements ActionListener {
     boolean running = false;
     Timer timer;
     Random random;
+    Food currentFood; // Polimorficzne pole dla jedzenia
 
     GamePanel(){
         random= new Random();
@@ -34,7 +35,7 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     public void startGame(){
-        newApple();
+        newFood();
         running=true;
         timer= new Timer(DELAY, this);
         timer.start();
@@ -47,13 +48,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public void draw(Graphics g) {
         if (running) {
-            for (int i = 0; i < SCREEN_HEIGHT / UNIT_SIZE; i++) {
-                g.drawLine(i * UNIT_SIZE, 0, i * UNIT_SIZE, SCREEN_HEIGHT);
-                g.drawLine(0, i * UNIT_SIZE, SCREEN_WIDTH, i * UNIT_SIZE);
-            }//OPTIONAL
-
-            g.setColor(Color.red);
-            g.fillOval(appleX, appleY, UNIT_SIZE, UNIT_SIZE);
+            currentFood.draw(g); // Rysowanie jedzenia
 
             for (int i = 0; i < bodyParts; i++) {
                 if (i == 0) {
@@ -74,10 +69,16 @@ public class GamePanel extends JPanel implements ActionListener {
         }
     }
 
-    public void newApple(){
-        appleX = random.nextInt((int)(SCREEN_WIDTH/UNIT_SIZE))*UNIT_SIZE;
-        appleY = random.nextInt((int)(SCREEN_HEIGHT/UNIT_SIZE))*UNIT_SIZE;
+    public void newFood() {
+        int x = random.nextInt((int) (SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE;
+        int y = random.nextInt((int) (SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE;
 
+        // Losuj typ jedzenia
+        if (random.nextBoolean()) {
+            currentFood = new RedApple(x, y);
+        } else {
+            currentFood = new BlueApple(x, y);
+        }
     }
 
     public void move(){
@@ -102,10 +103,9 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     public void checkApple(){
-        if((x[0]==appleX) && (y[0]==appleY)){
-            bodyParts++;
-            applesEaten++;
-            newApple();
+        if((x[0]==currentFood.x) && (y[0]== currentFood.y)){
+            currentFood.applyEffect(this);
+            newFood();
         }
     }
 
