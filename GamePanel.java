@@ -68,7 +68,7 @@ public class GamePanel extends JPanel implements ActionListener {
             gameOver(g);
         }
     }
-
+    //Food currentFood;
     public void newFood() {
         int x = random.nextInt((int) (SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE;
         int y = random.nextInt((int) (SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE;

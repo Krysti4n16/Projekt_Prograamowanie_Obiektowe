@@ -7,13 +7,13 @@ public class RedApple extends Food {
 
     @Override
     public void applyEffect(GamePanel gamePanel) {
-        gamePanel.bodyParts++; // Powiększa węża
+        gamePanel.bodyParts++;
         gamePanel.applesEaten++;
     }
 
     @Override
     public void draw(Graphics g) {
-        g.setColor(Color.red); // Czerwony kolor
+        g.setColor(Color.red);
         g.fillOval(x, y, SIZE, SIZE);
     }
 }

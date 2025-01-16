@@ -116,4 +116,9 @@ public class GameOver extends JPanel {
         frame.repaint();
         gamePanel.requestFocusInWindow(); // Fokus na panelu gry
     }
+
+    // Interfejs GameOver.EffectApplier
+    public static interface EffectApplier {
+        void applyEffect(GamePanel gamePanel);
+    }
 }

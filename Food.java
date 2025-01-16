@@ -1,23 +1,17 @@
 import java.awt.*;
 
-public class Food {
-    int x, y; // Pozycja jedzenia
-    static final int SIZE = GamePanel.UNIT_SIZE; // Rozmiar jedzenia
+public abstract class Food implements Drawable, Effect {
+    protected int x, y;
+    protected static final int SIZE = GamePanel.UNIT_SIZE;
 
-    // Konstruktor
     public Food(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    // Efekt jedzenia (do nadpisania)
-    public void applyEffect(GamePanel gamePanel) {
-        // Domyślnie nic nie robi
-    }
-
-    // Rysowanie jedzenia (do nadpisania)
+    @Override
     public void draw(Graphics g) {
-        g.setColor(Color.white); // Domyślnie białe
+        g.setColor(Color.white);
         g.fillOval(x, y, SIZE, SIZE);
     }
 }
