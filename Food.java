@@ -1,6 +1,7 @@
 import java.awt.*;
+import java.io.Serializable;
 
-public abstract class Food implements Drawable, Effect {
+public abstract class Food implements Drawable, Effect, Serializable {
     protected int x, y;
     protected static final int SIZE = GamePanel.UNIT_SIZE;
 

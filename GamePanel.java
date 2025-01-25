@@ -4,6 +4,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.Random;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +68,10 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public void spawnFoodIfNeeded()
     {
-        if(foods.size() < 5)
+        int maxFoodCount = 8;
+        boolean allBlueApples = foods.stream().allMatch(food -> food instanceof BlueApple);
+
+        if(foods.size() < maxFoodCount || allBlueApples)
         {
             addFood();
         }
@@ -127,23 +136,7 @@ public class GamePanel extends JPanel implements ActionListener {
             gameOver(g);
         }
     }
-    /*
-    //Food currentFood;
-    public void newFood() {
-        foods.clear(); // Usuwanie starego jedzenia
-        int numberOfApples = 3; // Liczba jedzenia do wygenerowania
-        for (int i = 0; i < numberOfApples; i++) {
-            int x = random.nextInt((int) (SCREEN_WIDTH / UNIT_SIZE)) * UNIT_SIZE;
-            int y = random.nextInt((int) (SCREEN_HEIGHT / UNIT_SIZE)) * UNIT_SIZE;
 
-            if (random.nextBoolean()) {
-                foods.add(new RedApple(x, y)); // Dodaj czerwone jabłko
-            } else {
-                foods.add(new BlueApple(x, y)); // Dodaj niebieskie jabłko
-            }
-        }
-    }
-*/
     public void move(){
         for(int i=bodyParts;i>0;i--){
             x[i]=x[i-1];
@@ -164,21 +157,7 @@ public class GamePanel extends JPanel implements ActionListener {
                 break;
         }
     }
-/*
-    public void checkApple() {
-        for (int i = 0; i < foods.size(); i++) {
-            Food food = foods.get(i);
-            if ((x[0] == food.x) && (y[0] == food.y)) {
-                food.applyEffect(this); // Zastosowanie efektu
-                foods.remove(i); // Usuń zjedzone jabłko
-                break;
-            }
-        }
-        if (foods.isEmpty()) {
-            newFood(); // Jeśli wszystkie jabłka zostały zjedzone, generuj nowe
-        }
-    }
-*/
+
     public void checkCollisions(){
         //collisions head with body
         for(int i=bodyParts;i>0;i--){
@@ -255,7 +234,42 @@ public class GamePanel extends JPanel implements ActionListener {
                         direction='D';
                     }
                     break;
+                case KeyEvent.VK_S : saveGame(); //przycisk S do save'ovania gry
             }
         }
     }
+
+    public void saveGame() {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream("savegame.ser"))) {
+            GameState gameState = new GameState(x, y, bodyParts, applesEaten, direction, foods);
+            oos.writeObject(gameState);
+            System.out.println("Gra została zapisana.");
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Błąd podczas zapisywania gry.");
+        }
+    }
+
+    public void loadGame() {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream("savegame.ser"))) {
+            GameState gameState = (GameState) ois.readObject();
+
+            // Przywrócenie stanu gry
+            System.arraycopy(gameState.x, 0, x, 0, gameState.x.length);
+            System.arraycopy(gameState.y, 0, y, 0, gameState.y.length);
+            bodyParts = gameState.bodyParts;
+            applesEaten = gameState.applesEaten;
+            direction = gameState.direction;
+            foods = gameState.foods;
+
+            running = true; // Wznów grę
+            timer.start();
+            System.out.println("Gra została wczytana.");
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            System.out.println("Błąd podczas wczytywania gry.");
+        }
+    }
+
+
 }

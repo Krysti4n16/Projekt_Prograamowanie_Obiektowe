@@ -1,6 +1,7 @@
 import java.awt.*;
+import java.io.Serializable;
 
-public class RedApple extends Food {
+public class RedApple extends Food implements Serializable {
     public RedApple(int x, int y) {
         super(x, y);
     }

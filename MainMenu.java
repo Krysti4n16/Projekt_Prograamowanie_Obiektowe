@@ -8,7 +8,7 @@ import java.util.List;
 public class MainMenu extends JPanel implements ActionListener {
 
     private JFrame frame;
-    private String[] options = {"Graj", "Zasady gry", "Wyniki", "Wyjście"};
+    private String[] options = {"Kontynuuj grę!", "Graj", "Zasady gry", "Wyniki", "Wyjście"};
     private int currentOption = 0;
 
     public MainMenu(JFrame frame) {
@@ -41,10 +41,11 @@ public class MainMenu extends JPanel implements ActionListener {
 
     private void selectOption() {
         switch (currentOption) {
-            case 0 -> startGame();
-            case 1 -> showRules();
-            case 2 -> showScores();
-            case 3 -> System.exit(0);
+            case 0 -> continueGame();
+            case 1 -> startGame();
+            case 2 -> showRules();
+            case 3 -> showScores();
+            case 4 -> System.exit(0);
         }
     }
 
@@ -57,6 +58,17 @@ public class MainMenu extends JPanel implements ActionListener {
         gamePanel.requestFocusInWindow();
     }
 
+    public void continueGame()
+    {
+        GamePanel gamePanel = new GamePanel();
+        frame.getContentPane().removeAll();
+        frame.add(gamePanel);
+        frame.revalidate();
+        frame.repaint();
+        gamePanel.loadGame();
+        gamePanel.requestFocusInWindow();
+
+    }
     private void showRules() {
         JTextArea rulesArea = new JTextArea(
                 "Zasady gry Snake:\n\n" +

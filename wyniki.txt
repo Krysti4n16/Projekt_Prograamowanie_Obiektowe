@@ -1,3 +1,5 @@
 Gracz1 25
 Gracz2 40
 Gracz3 15
+szymonTest 2
+Szymon 4
