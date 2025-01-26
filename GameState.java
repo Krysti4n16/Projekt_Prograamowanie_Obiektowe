@@ -3,6 +3,7 @@ import java.util.List;
 
 public class GameState  implements Serializable
 {
+    // Serializacja obiektów do zapisu stanu gry (Wymaganie: Serializacja obiektów)
     private static final long serialVersionUID = 1L;
 
     public int[] x;

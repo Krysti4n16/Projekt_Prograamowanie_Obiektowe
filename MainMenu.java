@@ -82,6 +82,7 @@ public class MainMenu extends JPanel implements ActionListener {
     }
 
     private void showScores() {
+        // Odczyt wyników z pliku tekstowego (Wymaganie : Odczyt danych z plików tekstowych)
         JTextArea scoresArea = new JTextArea();
         scoresArea.setEditable(false);
 

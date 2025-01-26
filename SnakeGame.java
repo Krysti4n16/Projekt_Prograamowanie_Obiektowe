@@ -3,6 +3,7 @@ import javax.swing.*;
 public class SnakeGame {
     public static void main(String[] args){
         //new GameFrame();
+        // Tworzenie głównego okna gry (Wymaganie: GUI w języku Java)
         JFrame frame = new JFrame("Snake - Menu");
         MainMenu menu = new MainMenu(frame);
 
