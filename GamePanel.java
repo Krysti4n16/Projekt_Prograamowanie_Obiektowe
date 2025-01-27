@@ -60,6 +60,12 @@ public class GamePanel extends JPanel implements ActionListener {
         spawnowanieJedzenia = new Timer(FOOD_SPAWN_DELAY, e -> spawnFoodIfNeeded());
         spawnowanieJedzenia.start();
     }
+    private static Color snakeColor = Color.GREEN;
+
+    public static void setSnakeColor(Color color) {
+        snakeColor = color;
+    }
+
 
     public void newFood()
     {
@@ -120,10 +126,10 @@ public class GamePanel extends JPanel implements ActionListener {
 
             for (int i = 0; i < bodyParts; i++) {
                 if (i == 0) {
-                    g.setColor(Color.green);
+                    g.setColor(snakeColor);
                     g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
                 } else {
-                    g.setColor(new Color(45, 180, 0));
+                    g.setColor(snakeColor.darker());
                     g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
                 }
             }

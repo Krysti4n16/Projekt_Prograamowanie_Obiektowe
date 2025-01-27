@@ -8,7 +8,7 @@ import java.util.List;
 public class MainMenu extends JPanel implements ActionListener {
 
     private JFrame frame;
-    private String[] options = {"Kontynuuj grę!", "Graj", "Zasady gry", "Wyniki", "Wyjście"};
+    private String[] options = {"Kontynuuj grę!", "Graj", "Zasady gry", "Wyniki", "Zmień kolor węża", "Wyjście"};
     private int currentOption = 0;
 
     public MainMenu(JFrame frame) {
@@ -45,9 +45,11 @@ public class MainMenu extends JPanel implements ActionListener {
             case 1 -> startGame();
             case 2 -> showRules();
             case 3 -> showScores();
-            case 4 -> System.exit(0);
+            case 4 -> changeSnakeColor();
+            case 5 -> System.exit(0);
         }
     }
+
 
     private void startGame() {
         GamePanel gamePanel = new GamePanel();
@@ -74,7 +76,8 @@ public class MainMenu extends JPanel implements ActionListener {
                 "Zasady gry Snake:\n\n" +
                         "1. Steruj wężem za pomocą strzałek.\n" +
                         "2. Zbieraj czerwone jabłka, aby zdobyć punkty i urosnąć.\n" +
-                        "3. Unikaj kolizji ze ścianami oraz własnym ciałem.\n\n" +
+                        "3. Unikaj kolizji ze ścianami oraz własnym ciałem.\n" +
+                        "4. Zapisz grę pod przyciskiem \"s\", aby później ją kontynuować.\n\n" +
                         "Naciśnij ESC, aby powrócić do menu."
         );
         rulesArea.setEditable(false);
@@ -97,6 +100,29 @@ public class MainMenu extends JPanel implements ActionListener {
 
         scoresArea.append("\nNaciśnij ESC, aby powrócić do menu.");
         showTextScreen("Wyniki", scoresArea);
+    }
+    private void changeSnakeColor() {
+        String[] colors = {"Zielony", "Niebieski", "Czerwony", "Żółty"};
+        Color[] colorValues = {Color.GREEN, Color.BLUE, Color.RED, Color.YELLOW};
+
+        String selectedColor = (String) JOptionPane.showInputDialog(
+                frame,
+                "Wybierz kolor węża:",
+                "Zmień kolor węża",
+                JOptionPane.PLAIN_MESSAGE,
+                null,
+                colors,
+                colors[0]
+        );
+
+        if (selectedColor != null) {
+            for (int i = 0; i < colors.length; i++) {
+                if (selectedColor.equals(colors[i])) {
+                    GamePanel.setSnakeColor(colorValues[i]);
+                    break;
+                }
+            }
+        }
     }
 
     private void showTextScreen(String title, JTextArea textArea) {
